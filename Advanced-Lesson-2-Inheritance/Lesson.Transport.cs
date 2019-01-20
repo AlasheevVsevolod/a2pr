@@ -68,7 +68,7 @@ namespace Advanced_Lesson_2_Inheritance
 
             foreach (var item in new Transport[] { transport1, transport2, transport3 })
             {
-                switch (item)
+/*                switch (item)
                 {
                     case Car c:
                         Console.Write(c.Fuel);
@@ -79,7 +79,7 @@ namespace Advanced_Lesson_2_Inheritance
                     case Transport t:
                         Console.Write(t.Mileage);
                         break;
-                }
+                }*/
             }
         }
 

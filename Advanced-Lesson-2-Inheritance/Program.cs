@@ -14,8 +14,9 @@ namespace Advanced_Lesson_2_Inheritance
             //Lesson.ObjectVariablesExample();
             //Lesson.VirtualMethodExample();
 
-            //Practice.A_L2_P1_1();
-            Lesson.ConstructroExamples2();
+            Practice.A_L2_P1_1();
+            //Lesson.ConstructroExamples2();
+            //Lesson.VirtualMethodExample();
 
             Console.ReadLine();
         }
