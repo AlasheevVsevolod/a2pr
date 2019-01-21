@@ -22,23 +22,23 @@ namespace Advanced_Lesson_2_Inheritance
             Console.WriteLine("Выберите операцию:\n1. В консоль\n2. В файл\n3. В картинку");
             string operation = Console.ReadLine();
 
-            Printer newPrinter;
+            IPrinter newPrinter;
 
             switch (operation)
             {
                 case "1":
-                    newPrinter = new ConsolePrinter(strToPrint, ConsoleColor.Magenta);
-                    newPrinter.Print();
+                    newPrinter = new ConsolePrinter(ConsoleColor.Magenta);
+                    newPrinter.Print(strToPrint);
                     break;
 
                 case "2":
-                    newPrinter = new FilePrinter(strToPrint, "newFile");
-                    newPrinter.Print();
+                    newPrinter = new FilePrinter("newFile");
+                    newPrinter.Print(strToPrint);
                     break;
 
                 case "3":
-                    newPrinter = new ImagePrinter(strToPrint, "newImage", 30, 5, 5);
-                    newPrinter.Print();
+                    newPrinter = new ImagePrinter("newImage", 30, 5, 5);
+                    newPrinter.Print(strToPrint);
                     break;
 
                 default:
@@ -48,49 +48,41 @@ namespace Advanced_Lesson_2_Inheritance
         }
     }
 
-    public abstract class Printer
+    public interface IPrinter
     {
-        public string strToPrint { get; set; }
-
-        public Printer(string tmpstr)
-        {
-            strToPrint = tmpstr;
-        }
-        public abstract void Print();
+        void Print(string str);
     }
 
-    public class ConsolePrinter : Printer
+    public class ConsolePrinter : IPrinter
     {
         private ConsoleColor _color;
-        public ConsolePrinter(string tmpStr, ConsoleColor tmpColor) :base(tmpStr)
+        public ConsolePrinter(ConsoleColor tmpColor)
         {
             _color = tmpColor;
         }
-        public override void Print()
+        public void Print(string str)
         {
             Console.ForegroundColor = _color;
-            Console.WriteLine(strToPrint);
+            Console.WriteLine(str);
             Console.ResetColor();
         }
     }
 
-    public class FilePrinter : Printer
+    public class FilePrinter : IPrinter
     {
         private ConsoleColor _color;
         private string _fileName;
-        public FilePrinter(string tmpStr, string tmpName) : base(tmpStr)
+        public FilePrinter(string tmpName)
         {
             _fileName = tmpName;
         }
-        public override void Print()
+        public void Print(string str)
         {
-            Console.ForegroundColor = _color;
-            System.IO.File.AppendAllText($@"D:\{_fileName}.txt", strToPrint);
-            Console.ResetColor();
+            System.IO.File.AppendAllText($@"D:\{_fileName}.txt", str);
         }
     }
 
-    public class ImagePrinter : Printer
+    public class ImagePrinter : IPrinter
     {
         private string _fileName;
         private int _fontSize, _x, _y;
@@ -98,7 +90,7 @@ namespace Advanced_Lesson_2_Inheritance
         private Brush _fontColor;
         private Font _font;
 
-        public ImagePrinter(string tmpStr, string tmpName, int tmpFontSize, int tmpX, int tmpY) : base(tmpStr)
+        public ImagePrinter(string tmpName, int tmpFontSize, int tmpX, int tmpY)
         {
             _fileName = tmpName;
             _imgPath = $@"D:\{_fileName}.bmp";
@@ -110,7 +102,7 @@ namespace Advanced_Lesson_2_Inheritance
             _x = tmpX;
             _y = tmpY;
         }
-        public override void Print()
+        public void Print(string str)
         {
             Bitmap newFile = new Bitmap(500, 500);
 
@@ -125,7 +117,7 @@ namespace Advanced_Lesson_2_Inheritance
 
             Graphics tmpG = Graphics.FromImage(newFile);
 
-            tmpG.DrawString(strToPrint, _font, _fontColor, _x, _y);
+            tmpG.DrawString(str, _font, _fontColor, _x, _y);
             newFile.Save(_imgPath);
         }
     }
